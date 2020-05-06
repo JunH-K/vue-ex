@@ -10,20 +10,36 @@
 </head>
 <body>
 <div id="root">
-  <div v-if="liked">좋아요 누름</div>
-  <button v-else v-on:click="onClickButton">Like</button>
+  <div>{{ first }}곱하기 {{ second }} 는?</div>
+  <form v-on:submit="obSubmitForm">
+    <input type="number" v-model="value" ref="answer">
+    <button>입력</button>
+    <div>{{ result }}</div>
+  </form>
 </div>
 <script>
   const app = new Vue( {
     el: '#root',
     data: {
-      liked: false,
+      first: Math.ceil( Math.random() * 9 ),
+      second: Math.ceil( Math.random() * 9 ),
+      value: '',
+      result: '',
     },
     methods: {
-      onClickButton() {
-        this.liked = true;
+      obSubmitForm(e) {
+        e.preventDefault();
+        if( this.first * this.second === parseInt( this.value ) ) {
+          this.result = "정답";
+          this.first = Math.ceil( Math.random() * 9 );
+          this.second = Math.ceil( Math.random() * 9 );
+          this.value = '';
+          this.$refs.answer.focus();
+        } else {
+          this.result = "틀림";
+        }
       }
-    }
+    },
   } );
 </script>
 </body>
